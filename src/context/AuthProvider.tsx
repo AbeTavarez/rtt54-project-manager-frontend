@@ -1,5 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import type { User } from "../types";
+import { apiClient } from "../clients/api";
 
 interface AuthContextType {
   user: User | null;
@@ -50,9 +51,30 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   //   }
   // }, []);
 
-  const logIn = async (username: string, password: string) => {};
+  const logIn = async (email: string, password: string) => {
+    try {
+      const res = await apiClient.post('/api/users/login', {email, password});
+      console.log(res.data);
+      // set data in state
+      setToken(res.data.token);
+      setUser(res.data.user);
 
-  const register = async (username: string, email: string, password: string) => {};
+      // set data in local storage
+      localStorage.setItem('token', JSON.stringify(res.data.token));
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const register = async (username: string, email: string, password: string) => {
+    try {
+      const res = await apiClient.post('/api/users/register', {username, email, password});
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const logOut = () => {};
 

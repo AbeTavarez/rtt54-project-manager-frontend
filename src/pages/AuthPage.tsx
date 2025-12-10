@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useContext, useState, type FormEvent } from "react";
+import { AuthContext } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 function AuthPage() {
   const [showRegister, setShowRegister] = useState(true);
@@ -8,11 +10,21 @@ function AuthPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  // AuthContext
+  const { logIn, register } = useContext(AuthContext)!;
+
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
     try {
       setError("");
       setLoading(true);
-      // api call here
+      if (!email || !password) return;
+
+      // API call here
+      logIn(email, password);
+      navigate('/projects');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error.message);
@@ -22,11 +34,16 @@ function AuthPage() {
     }
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e: FormEvent) => {
+    e.preventDefault();
     try {
       setError("");
       setLoading(true);
-      // api call here
+      if (!username || !email || !password) return;
+
+      // API call here
+      register(username, email, password);
+      setShowRegister(false);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error.message);
