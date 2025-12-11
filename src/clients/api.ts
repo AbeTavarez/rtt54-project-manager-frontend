@@ -6,6 +6,8 @@ try {
   if (value) {
     token = JSON.parse(value);
   }
+  console.log(token);
+  
 } catch (error) {
   console.error(error);
 }

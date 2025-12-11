@@ -23,7 +23,7 @@ function AuthPage() {
       if (!email || !password) return;
 
       // API call here
-      logIn(email, password);
+      await logIn(email, password);
       navigate('/projects');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -42,7 +42,7 @@ function AuthPage() {
       if (!username || !email || !password) return;
 
       // API call here
-      register(username, email, password);
+      await register(username, email, password);
       setShowRegister(false);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
